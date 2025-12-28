@@ -107,6 +107,9 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		goofyBarBG = new FlxSprite(0,
 			barY).loadGraphic(Paths.image(ForeverTools.returnSkinAsset('grend', PlayState.assetModifier, PlayState.changeableSkin, 'UI')));
 		goofyBarBG.screenCenter(X);
+		goofyBarBG.alpha = 0.56;
+		goofyBarBG.scale.set(1, 1.02);
+		goofyBarBG.updateHitbox();
 		add(goofyBarBG);
 
 		iconP1 = new HealthIcon(PlayState.SONG.player1, true);
