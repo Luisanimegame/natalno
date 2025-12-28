@@ -208,12 +208,12 @@ class PlayState extends MusicBeatState
 		// set up characters here too
 		gf = new Character();
 		gf.adjustPos = false;
-		gf.setCharacter(300, 100, stageBuild.returnGFtype(curStage));
+		gf.setCharacter(0, 0, stageBuild.returnGFtype(curStage));
 		gf.scrollFactor.set(0.95, 0.95);
 
-		opponent = new Character().setCharacter(50, 850, SONG.player2);
+		opponent = new Character().setCharacter(0, 0, SONG.player2);
 		boyfriend = new Boyfriend();
-		boyfriend.setCharacter(750, 850, SONG.player1);
+		boyfriend.setCharacter(0, 0, SONG.player1);
 		// if you want to change characters later use setCharacter() instead of new or it will break
 
 		var camPos:FlxPoint = new FlxPoint(gf.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
