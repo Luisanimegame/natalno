@@ -255,6 +255,11 @@ class Paths
 	{
 		return getPath('images/characters/$key.txt', TEXT, library);
 	}
+	
+	inline static public function getTextFromFile(key:String, ?library:String)
+	{
+		return getPath('stages/$key.json', TEXT, library);
+	}
 
 	inline static public function json(key:String, ?library:String)
 	{
