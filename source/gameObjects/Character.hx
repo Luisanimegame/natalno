@@ -100,7 +100,7 @@ class Character extends FNFSprite
 				characterData.offsetY = 70;
 				
 			case 'noel':
-				frames = Paths.getSparrowAtlas('characters/nkel');
+				frames = Paths.getSparrowAtlas('characters/dknoel');
 
 				animation.addByPrefix('idle', 'idlee', 12, false);
 				animation.addByPrefix('singUP', 'cima', 12, false);
