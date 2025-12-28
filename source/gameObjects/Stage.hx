@@ -90,7 +90,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				bg.antialiasing = true;
 				add(bg);
 				
-				var pud:FNFSprite = new FNFSprite(678.5, -160).loadGraphic(Paths.image('backgrounds/' + curStage + '/pudim'));
+				var pud:FNFSprite = new FNFSprite(678.5, -90).loadGraphic(Paths.image('backgrounds/' + curStage + '/pudim'));
 				pud.scale.set(1.32, 1.32);
 				pud.updateHitbox();
 				pud.antialiasing = true;
