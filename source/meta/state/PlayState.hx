@@ -37,6 +37,7 @@ import openfl.display.GraphicsShader;
 import openfl.events.KeyboardEvent;
 import openfl.filters.ShaderFilter;
 import openfl.media.Sound;
+import haxe.Json;
 import openfl.utils.Assets;
 import sys.io.File;
 
@@ -158,7 +159,7 @@ class PlayState extends MusicBeatState
 	}
 
 	// at the beginning of the playstate
-	public var charPosiic:GamePosic;
+	public var charPosic:GamePosic;
 	override public function create()
 	{
 		super.create();
