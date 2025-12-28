@@ -146,6 +146,8 @@ class Character extends FNFSprite
 				
 
 				playAnim('idle');
+				
+				flipX = true;
 
 				characterData.offsetY = 190;
 				characterData.camOffsetY = 40;
