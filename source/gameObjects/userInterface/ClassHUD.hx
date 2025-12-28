@@ -80,10 +80,9 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 
 		var color:Array<Int>;
 		var colorTable = [
-			"gemaplys" => [0, 165, 186],
-
+			"noel" => [215, 70, 109],
 			"bf"	   => bfColor,
-			"bf-reshaped" => [255,153,51] // you're not a boyfriend!!!11!
+			"gay" => [255, 229, 173] // ah
 		];
 		
 		color = colorTable[SONG.player1];
