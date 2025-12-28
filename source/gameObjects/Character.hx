@@ -110,7 +110,7 @@ class Character extends FNFSprite
 
 				playAnim('idle');
 
-				characterData.offsetY = 190;
+				characterData.offsetY = -190;
 				characterData.camOffsetY = -20;
 				characterData.camOffsetX = -150;
 				
@@ -149,7 +149,7 @@ class Character extends FNFSprite
 				
 				flipX = true;
 
-				characterData.offsetY = 190;
+				characterData.offsetY = -190;
 				characterData.camOffsetY = 40;
 				characterData.camOffsetX = 80;
 				
@@ -237,6 +237,11 @@ class Character extends FNFSprite
 		}
 		else if (curCharacter.startsWith('bf'))
 			flipLeftRight();
+		
+		if (curCharacter.startsWith('boy'))
+				flipLeftRight();
+			//
+		}
 
 		if (adjustPos)
 		{
