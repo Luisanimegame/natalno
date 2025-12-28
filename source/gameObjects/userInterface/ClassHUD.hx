@@ -19,6 +19,7 @@ import flixel.util.FlxTimer;
 import meta.CoolUtil;
 import meta.data.Conductor;
 import meta.data.Timings;
+import meta.data.Song;
 import meta.state.PlayState;
 
 using StringTools;
