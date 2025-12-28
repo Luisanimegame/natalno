@@ -148,8 +148,6 @@ class PlayState extends MusicBeatState
 	public var strumLines:FlxTypedGroup<Strumline>;
 
 	public var comboGroup:FlxSpriteGroup;
-	
-	var charPosiic:GamePosic;
 
 	function resetStatics()
 	{
@@ -160,6 +158,7 @@ class PlayState extends MusicBeatState
 	}
 
 	// at the beginning of the playstate
+	public var charPosiic:GamePosic;
 	override public function create()
 	{
 		super.create();
