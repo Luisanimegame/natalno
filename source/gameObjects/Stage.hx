@@ -86,7 +86,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		  	cameraZoom = 0.62;
 				curStage = 'whithw';
 			  
-			  var bg:FNFSprite = new FNFSprite(-2000, -2500).makeGraphic(6969, 6969, FlxColor.WHITE);
+			  var bg:FlxSprite = new FlxSprite(-2000, -2500).makeGraphic(6969, 6969, FlxColor.WHITE);
 				bg.antialiasing = true;
 				add(bg);
 				
