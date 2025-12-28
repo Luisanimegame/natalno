@@ -175,23 +175,6 @@ class Stage extends FlxTypedGroup<FlxBasic>
 	public function repositionPlayers(curStage, boyfriend:Character, dad:Character, gf:Character):Void
 	{
 		// REPOSITIONING PER STAGE
-		switch (curStage)
-		{
-			case 'whithw':
-				boyfriend.x += 650;
-				boyfriend.y += 70;
-				dad.x -= 100;
-				dad.y += 60;
-				gf.x += 285;
-				gf.y += 0;
-			case 'stage':
-				dad.x -= 69;
-				dad.y += 69;
-				boyfriend.x += 69;
-				boyfriend.y += 69;
-				gf.x += 69;
-				gf.y += 6969;
-		}
 	}
 
 	var curLight:Int = 0;
