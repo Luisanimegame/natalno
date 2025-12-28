@@ -230,7 +230,7 @@ class Character extends FNFSprite
 		{
 			flipX = !flipX;
 			
-			if (curCharacter.startsWith('boy'))
+			if (curCharacter.startsWith('ga'))
 				flipLeftRight();
 
 			// Doesn't flip for BF, since his are already in the right place???
