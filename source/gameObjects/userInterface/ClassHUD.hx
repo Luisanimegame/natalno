@@ -49,6 +49,9 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 	private var stupidHealth:Float = 0;
 
 	private var timingsMap:Map<String, FlxText> = [];
+	
+	var healthBarEmptyColor:FlxColor = 0xFFFF0000;
+	var healthBarFilledColor:FlxColor = 0xFF66FF33;
 
 	var infoDisplay:String = CoolUtil.dashToSpace(PlayState.SONG.song);
 	var diffDisplay:String = CoolUtil.difficultyFromNumber(PlayState.storyDifficulty);
@@ -69,21 +72,39 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		var barY = FlxG.height * 0.875;
 		if (Init.trueSettings.get('Downscroll'))
 			barY = 64;
+			
+		var bfColor:Array<Int> = [49,176,209];
+
+		var color:Array<Int>;
+		var colorTable = [
+			"gemaplys" => [0, 165, 186],
+
+			"bf"	   => bfColor,
+			"bf-reshaped" => [255,153,51] // you're not a boyfriend!!!11!
+		];
+		
+		color = colorTable[SONG.player1];
+		if (color != null)
+			healthBarFilledColor.setRGB(color[0], color[1], color[2], 255);
+
+		color = colorTable[SONG.player2];
+		if (color != null)
+			healthBarEmptyColor.setRGB(color[0], color[1], color[2], 255);
 
 		healthBarBG = new FlxSprite(0,
 			barY).loadGraphic(Paths.image(ForeverTools.returnSkinAsset('healthBar', PlayState.assetModifier, PlayState.changeableSkin, 'UI')));
 		healthBarBG.screenCenter(X);
 		add(healthBarBG);
+
+		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8));
+		healthBar.createGradientBar([healthBarFilledColor, healthBarEmptyColor, healthBarEmptyColor], [healthBarFilledColor, healthBarFilledColor, healthBarEmptyColor]);
+		// healthBar
+		add(healthBar);
 		
 		goofyBarBG = new FlxSprite(0,
 			barY).loadGraphic(Paths.image(ForeverTools.returnSkinAsset('grend', PlayState.assetModifier, PlayState.changeableSkin, 'UI')));
 		goofyBarBG.screenCenter(X);
 		add(goofyBarBG);
-
-		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8));
-		healthBar.createFilledBar(0xFFFF0000, 0xFF66FF33);
-		// healthBar
-		add(healthBar);
 
 		iconP1 = new HealthIcon(PlayState.SONG.player1, true);
 		iconP1.y = healthBar.y - (iconP1.height * 0.5);
