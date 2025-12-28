@@ -41,6 +41,15 @@ import openfl.utils.Assets;
 import sys.io.File;
 
 using StringTools;
+typedef GamePosic =
+{
+	bfx:Float,
+	bfy:Float,
+	dadx:Float,
+	dady:Float,
+	gfx:Float,
+	gfy:Float
+}
 
 #if desktop
 import meta.data.dependency.Discord;
@@ -139,6 +148,8 @@ class PlayState extends MusicBeatState
 	public var strumLines:FlxTypedGroup<Strumline>;
 
 	public var comboGroup:FlxSpriteGroup;
+	
+	var charPosiic:GamePosic;
 
 	function resetStatics()
 	{
@@ -204,16 +215,18 @@ class PlayState extends MusicBeatState
 
 		stageBuild = new Stage(curStage);
 		add(stageBuild);
+		
+		charPosiic = Paths.getTextFromFile(curStage);
 
 		// set up characters here too
 		gf = new Character();
 		gf.adjustPos = false;
-		gf.setCharacter(0, 0, stageBuild.returnGFtype(curStage));
+		gf.setCharacter(charPosiic.gfx, charPosiic.gfy, stageBuild.returnGFtype(curStage));
 		gf.scrollFactor.set(0.95, 0.95);
 
-		opponent = new Character().setCharacter(0, 0, SONG.player2);
+		opponent = new Character().setCharacter(charPosiic.dadx, charPosiic.dady, SONG.player2);
 		boyfriend = new Boyfriend();
-		boyfriend.setCharacter(0, 0, SONG.player1);
+		boyfriend.setCharacter(charPosiic.bfx, charPosiic.bfy, SONG.player1);
 		// if you want to change characters later use setCharacter() instead of new or it will break
 
 		var camPos:FlxPoint = new FlxPoint(gf.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
