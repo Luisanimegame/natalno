@@ -229,6 +229,9 @@ class Character extends FNFSprite
 		if (isPlayer) // fuck you ninjamuffin lmao
 		{
 			flipX = !flipX;
+			
+			if (curCharacter.startsWith('boy'))
+				flipLeftRight();
 
 			// Doesn't flip for BF, since his are already in the right place???
 			if (!curCharacter.startsWith('bf'))
@@ -237,11 +240,6 @@ class Character extends FNFSprite
 		}
 		else if (curCharacter.startsWith('bf'))
 			flipLeftRight();
-		
-		if (curCharacter.startsWith('boy'))
-				flipLeftRight();
-			//
-		}
 
 		if (adjustPos)
 		{
