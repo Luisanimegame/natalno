@@ -158,7 +158,7 @@ class PlayState extends MusicBeatState
 	}
 
 	// at the beginning of the playstate
-	public var charPosic:GamePosic;
+	public var charPosiic:GamePosic;
 	override public function create()
 	{
 		super.create();
@@ -215,17 +215,18 @@ class PlayState extends MusicBeatState
 		stageBuild = new Stage(curStage);
 		add(stageBuild);
 		
-		charPosic = Paths.getTextFromFile(curStage);
+		var posJson:String = Paths.getTextFromFile(curStage);
+    charPosic = haxe.Json.parse(posJson);
 
 		// set up characters here too
 		gf = new Character();
 		gf.adjustPos = false;
-		gf.setCharacter(charPosic.gfx, charPosic.gfy, stageBuild.returnGFtype(curStage));
+		gf.setCharacter(charPosiic.gfx, charPosiic.gfy, stageBuild.returnGFtype(curStage));
 		gf.scrollFactor.set(0.95, 0.95);
 
-		opponent = new Character().setCharacter(charPosic.dadx, charPosic.dady, SONG.player2);
+		opponent = new Character().setCharacter(charPosiic.dadx, charPosiic.dady, SONG.player2);
 		boyfriend = new Boyfriend();
-		boyfriend.setCharacter(charPosic.bfx, charPosic.bfy, SONG.player1);
+		boyfriend.setCharacter(charPosiic.bfx, charPosiic.bfy, SONG.player1);
 		// if you want to change characters later use setCharacter() instead of new or it will break
 
 		var camPos:FlxPoint = new FlxPoint(gf.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
