@@ -222,12 +222,12 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 
 	public function updateScoreText()
 	{
-		scoreDisplay = 'Score: ${game.songScore}';
+		scoreDisplay = 'Rabiscos: ${game.songScore}';
 		if (Init.trueSettings.get('Display Accuracy'))
 		{
 			var comboDisplay:String = (Timings.comboDisplay != '' ? ' [${Timings.comboDisplay}] ' : '');
-			scoreDisplay += divider + 'Accuracy: ${Math.floor(Timings.getAccuracy() * 100) / 100}%' + comboDisplay;
-			scoreDisplay += divider + 'Combo Breaks: ${game.misses}';
+			scoreDisplay += divider + 'Acturado: ${Math.floor(Timings.getAccuracy() * 100) / 100}%' + comboDisplay;
+			scoreDisplay += divider + 'Borrachadas: ${game.misses}';
 			scoreDisplay += divider + 'Rank: ${Timings.returnScoreRating().toUpperCase()}';
 		}
 
