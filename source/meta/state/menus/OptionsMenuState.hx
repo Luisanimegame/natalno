@@ -179,8 +179,7 @@ class OptionsMenuState extends MusicBeatState
 		curSelection = 0;
 		selectOption(curSelection);
 		
-		#if mobile new FlxTimer().start(0.1, (_) -> 
-		addVPad(UP_DOWN, A_B_C)); #end
+		#if mobile addVPad(UP_DOWN, A_B_C); #end
 	}
 
 	function selectOption(newSelection:Int, playSound:Bool = true)
@@ -311,7 +310,6 @@ class OptionsMenuState extends MusicBeatState
 		if (controls.BACK)
 		{
 			FlxG.sound.play(Paths.sound('cancelMenu'));
-			#if mobile removeVPad(); #end
 			if (curCategory != 'main')
 				loadSubgroup('main');
 			else
