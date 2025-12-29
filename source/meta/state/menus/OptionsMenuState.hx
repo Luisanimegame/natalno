@@ -179,17 +179,8 @@ class OptionsMenuState extends MusicBeatState
 		curSelection = 0;
 		selectOption(curSelection);
 		
-		#if mobile addVPad(FULL, A_B_C); #end
-	}
-	
-	override function closeSubState() {
-		super.closeSubState();
-		#if mobile addVPad(UP_DOWN, A_B_C); #end
-	}
-
-	override function openSubState(sub) {
-	    #if mobile removeVPad(); #end
-	    super.openSubState(sub);
+		#if mobile new FlxTimer().start(0.1, (_) -> 
+		addVPad(UP_DOWN, A_B_C)); #end
 	}
 
 	function selectOption(newSelection:Int, playSound:Bool = true)
@@ -320,6 +311,7 @@ class OptionsMenuState extends MusicBeatState
 		if (controls.BACK)
 		{
 			FlxG.sound.play(Paths.sound('cancelMenu'));
+			#if mobile removeVPad(); #end
 			if (curCategory != 'main')
 				loadSubgroup('main');
 			else
