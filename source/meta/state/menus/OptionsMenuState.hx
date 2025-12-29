@@ -181,6 +181,16 @@ class OptionsMenuState extends MusicBeatState
 		
 		#if mobile addVPad(FULL, A_B_C); #end
 	}
+	
+	override function closeSubState() {
+		super.closeSubState();
+		#if mobile addVPad(UP_DOWN, A_B_C); #end
+	}
+
+	override function openSubState(sub) {
+	    #if mobile removeVPad(); #end
+	    super.openSubState(sub);
+	}
 
 	function selectOption(newSelection:Int, playSound:Bool = true)
 	{

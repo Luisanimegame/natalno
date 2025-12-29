@@ -109,12 +109,12 @@ class Character extends FNFSprite
 				animation.addByPrefix('singDOWN', 'baixo', 12, false);
 
 				playAnim('idle');
-
-				characterData.offsetY = 310;
-				characterData.camOffsetY = -20;
-				characterData.camOffsetX = -150;
 				
-				scale.set(1.4, 1.4);
+				characterData.offsetX = -20;
+				characterData.offsetY = 160;
+				characterData.camOffsetX = -110;
+				
+				scale.set(1.2, 1.2);
 				updateHitbox();
 				
 			case 'girl':
@@ -123,12 +123,13 @@ class Character extends FNFSprite
 				animation.addByPrefix('idle', 'idledocacete', 12, true);
 
 				playAnim('idle');
-
-				characterData.offsetY = 190;
-				characterData.camOffsetY = 40;
-				characterData.camOffsetX = -250;
 				
-				scale.set(1.4, 1.4);
+				characterData.offsetX = -20;
+				characterData.offsetY = 120;
+				characterData.camOffsetY = 20;
+				characterData.camOffsetX = -380;
+				
+				scale.set(1.2, 1.2);
 				updateHitbox();
 				
 			case 'gay':

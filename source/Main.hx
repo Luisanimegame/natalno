@@ -57,11 +57,17 @@ class Main extends Sprite
 		[ [songs to use], [characters in songs], [color of week], name of week ]
 	**/
 	public static var gameWeeks:Array<Dynamic> = [
-		[ // Week 0 / Tutorial
-			['Christrash'],
+		[ // Week 0
+			['christrash'],
 			['noel'],
 			[FlxColor.fromRGB(215, 70, 109)],
 			'Um Oneshota do idklool'
+		],
+		[ // Essa coisa goofy aj
+			['newtrash'],
+			['noel'],
+			[FlxColor.fromRGB(215, 70, 109)],
+			'mais ja e ano novo caramb'
 		],
 	];
 
