@@ -117,14 +117,14 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				grandMoon.antialiasing = true;
 				add(grandMoon);
 				
-				moon = new FNFSprite(1088, -410).loadGraphic(Paths.image('backgrounds/' + curStage + '/lua'));
+				moon = new FNFSprite(898, -410).loadGraphic(Paths.image('backgrounds/' + curStage + '/lua'));
 				moon.scale.set(1.32, 1.32);
 				moon.scrollFactor.set(0.67, 0.71);
 				moon.updateHitbox();
 				moon.antialiasing = true;
 				add(moon);
 				
-				var nuv:FNFSprite = new FNFSprite(-255.5, 466.66);
+				var nuv:FNFSprite = new FNFSprite(-255.5, 246.66);
 				nuv.frames = Paths.getSparrowAtlas('backgrounds/' + curStage + '/nuvem');
 				nuv.animation.addByPrefix('idle', "nuvem", 2);
 				nuv.animation.play('idle');
