@@ -81,6 +81,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		var color:Array<Int>;
 		var colorTable = [
 			"noel" => [215, 70, 109],
+			"garoto" => [81, 139, 255],
 			"bf"	   => bfColor,
 			"gay" => [255, 229, 173] // ah
 		];

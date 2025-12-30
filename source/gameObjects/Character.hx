@@ -117,6 +117,25 @@ class Character extends FNFSprite
 				scale.set(1.2, 1.2);
 				updateHitbox();
 				
+			case 'garoto':
+				frames = Paths.getSparrowAtlas('characters/dknoel');
+
+				animation.addByPrefix('idle', 'idlee', 12, false);
+				animation.addByPrefix('singUP', 'cima', 12, false);
+				animation.addByPrefix('singLEFT', 'esquerda', 12, false);
+				animation.addByPrefix('singRIGHT', 'direita', 12, false);
+				animation.addByPrefix('singDOWN', 'baixo', 12, false);
+
+				playAnim('idle');
+				
+				characterData.offsetX = -20;
+				characterData.offsetY = 150;
+				characterData.camOffsetX = -140;
+				characterData.camOffsetY = -30;
+				
+				scale.set(1.2, 1.2);
+				updateHitbox();
+				
 			case 'girl':
 				frames = Paths.getSparrowAtlas('characters/gkrl');
 
@@ -231,7 +250,7 @@ class Character extends FNFSprite
 		{
 			flipX = !flipX;
 			
-			if (curCharacter.startsWith('ga'))
+			if (curCharacter.startsWith('gay'))
 				flipLeftRight();
 
 			// Doesn't flip for BF, since his are already in the right place???

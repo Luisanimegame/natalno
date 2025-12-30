@@ -69,6 +69,8 @@ class Stage extends FlxTypedGroup<FlxBasic>
 			{
 				case 'christrash':
 					curStage = 'whithw';
+				case 'newtrash':
+					curStage = 'whithwerect';
 				default:
 					curStage = 'stage';
 			}
@@ -90,7 +92,41 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				bg.antialiasing = true;
 				add(bg);
 				
-				var pud:FNFSprite = new FNFSprite(688.5, -42.5).loadGraphic(Paths.image('backgrounds/' + curStage + '/pudim'));
+				var pud:FNFSprite = new FNFSprite(678.5, -50).loadGraphic(Paths.image('backgrounds/' + curStage + '/pudim'));
+				pud.scale.set(1.32, 1.32);
+				pud.updateHitbox();
+				pud.antialiasing = true;
+				add(pud);
+				
+			case 'whithwerect':
+		  	cameraZoom = 0.72;
+				curStage = 'whithw';
+			  
+			  var bg:FlxSprite = new FlxSprite(-2000, -2500).makeGraphic(6969, 6969, FlxColor.fromString('231752'));
+				bg.antialiasing = true;
+				add(bg);
+				
+				grandMoon = new FNFSprite(-2100, -2100).loadGraphic(Paths.image('backgrounds/' + curStage + '/uff'));
+				grandMoon.scale.set(10.50, 10.50);
+				grandMoon.updateHitbox();
+				grandMoon.antialiasing = true;
+				add(grandMoon);
+				
+				moon = new FNFSprite(788, -210).loadGraphic(Paths.image('backgrounds/' + curStage + '/lua'));
+				moon.scale.set(1.32, 1.32);
+				moon.scrollFactor.set(0.67, 0.71);
+				moon.updateHitbox();
+				moon.antialiasing = true;
+				add(moon);
+				
+				var nuv:FNFSprite = new FNFSprite(-250, 350);
+				nuv.frames = Paths.getSparrowAtlas('backgrounds/' + curStage + '/nuvem');
+				nuvem.animation.addByPrefix('idle', "nuvem", 2);
+				nuvem.animation.play('idle');
+				nuvem.scrollFactor.set(0.89, 0.87);
+				add(nuvem);
+				
+				var pud:FNFSprite = new FNFSprite(678.5, -50).loadGraphic(Paths.image('backgrounds/' + curStage + '/pudim'));
 				pud.scale.set(1.32, 1.32);
 				pud.updateHitbox();
 				pud.antialiasing = true;
@@ -138,7 +174,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		{
 			case 'stage':
 				gfVersion = 'fuckfuck';
-			case 'whithw':
+			case 'whithw' || 'whithwerect':
 				gfVersion = 'girl';
 		}
 
