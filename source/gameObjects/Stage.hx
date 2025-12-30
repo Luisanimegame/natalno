@@ -16,6 +16,7 @@ import flixel.tweens.FlxTween;
 import gameObjects.background.*;
 import meta.CoolUtil;
 import flixel.util.FlxColor;
+import flixel.tweens.FlxEase;
 import meta.data.Conductor;
 import meta.data.dependency.FNFSprite;
 import meta.state.PlayState;
