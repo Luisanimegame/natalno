@@ -281,7 +281,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 					trainCooldown = FlxG.random.int(-4, 0);
 					trainStart();
 				}
-			case 'whithwerect'
+			case 'whithwerect':
 			if (curBeat % 4 == 0)
 			{
 			  grandMoon.alpha = 1;
