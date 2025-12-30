@@ -105,17 +105,18 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		  	cameraZoom = 0.72;
 				curStage = 'whithwerect';
 			  
-			  var bg:FlxSprite = new FlxSprite(-2000, -2500).makeGraphic(6969, 6969, FlxColor.fromString('231752'));
+			  var bg:FlxSprite = new FlxSprite(-2000, -2500).makeGraphic(6969, 6969, FlxColor.fromString('0xFF231752'));
 				bg.antialiasing = true;
 				add(bg);
 				
 				grandMoon = new FNFSprite(-2100, -2100).loadGraphic(Paths.image('backgrounds/' + curStage + '/uff'));
 				grandMoon.scale.set(10.50, 10.50);
+				grandMoon.alpha = 0;
 				grandMoon.updateHitbox();
 				grandMoon.antialiasing = true;
 				add(grandMoon);
 				
-				moon = new FNFSprite(788, -210).loadGraphic(Paths.image('backgrounds/' + curStage + '/lua'));
+				moon = new FNFSprite(1088, -410).loadGraphic(Paths.image('backgrounds/' + curStage + '/lua'));
 				moon.scale.set(1.32, 1.32);
 				moon.scrollFactor.set(0.67, 0.71);
 				moon.updateHitbox();
@@ -127,6 +128,8 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				nuv.animation.addByPrefix('idle', "nuvem", 2);
 				nuv.animation.play('idle');
 				nuv.scrollFactor.set(0.89, 0.87);
+				nuv.scale.set(1.32, 1.32);
+				nuv.updateHitbox();
 				add(nuv);
 				
 				var pud:FNFSprite = new FNFSprite(678.5, -50).loadGraphic(Paths.image('backgrounds/' + curStage + '/pudim'));
@@ -278,6 +281,12 @@ class Stage extends FlxTypedGroup<FlxBasic>
 					trainCooldown = FlxG.random.int(-4, 0);
 					trainStart();
 				}
+			case 'whithwerect'
+			if (curBeat % 4 == 0)
+			{
+			  grandMoon.alpha = 1;
+			  FlxTween.tween(grandMoon, {alpha: 0}, 0.50, {ease: FlxEase.linear});
+			}
 		}
 	}
 

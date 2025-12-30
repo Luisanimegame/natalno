@@ -118,7 +118,7 @@ class Character extends FNFSprite
 				updateHitbox();
 				
 			case 'garoto':
-				frames = Paths.getSparrowAtlas('characters/dknoel');
+				frames = Paths.getSparrowAtlas('characters/idkanonov');
 
 				animation.addByPrefix('idle', 'idlee', 12, false);
 				animation.addByPrefix('singUP', 'cima', 12, false);
