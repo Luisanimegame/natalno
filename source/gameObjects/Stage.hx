@@ -59,6 +59,16 @@ class Stage extends FlxTypedGroup<FlxBasic>
 
 	public var foreground:FlxTypedGroup<FlxBasic>;
 
+	var red:FNFSprite;
+	var pink:FNFSprite;
+	var yellow:FNFSprite;
+	var green:FNFSprite;
+
+	var redCooldown:Int = 0;
+	var pinkCooldown:Int = 0;
+	var yellowCooldown:Int = 0;
+	var greenCooldown:Int = 0;
+
 	public function new(curStage)
 	{
 		super();
@@ -96,7 +106,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				bg.antialiasing = true;
 				add(bg);
 				
-				var pud:FNFSprite = new FNFSprite(678.5, -35).loadGraphic(Paths.image('backgrounds/' + curStage + '/pudim'));
+				var pud:FNFSprite = new FNFSprite(678.5, -25).loadGraphic(Paths.image('backgrounds/' + curStage + '/pudim'));
 				pud.scale.set(1.32, 1.32);
 				pud.updateHitbox();
 				pud.antialiasing = true;
@@ -117,14 +127,14 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				grandMoon.antialiasing = true;
 				add(grandMoon);
 				
-				moon = new FNFSprite(898, -410).loadGraphic(Paths.image('backgrounds/' + curStage + '/lua'));
+				moon = new FNFSprite(898, -430).loadGraphic(Paths.image('backgrounds/' + curStage + '/lua'));
 				moon.scale.set(1.32, 1.32);
 				moon.scrollFactor.set(0.67, 0.71);
 				moon.updateHitbox();
 				moon.antialiasing = true;
 				add(moon);
 				
-				var nuv:FNFSprite = new FNFSprite(-255.5, 246.66);
+				var nuv:FNFSprite = new FNFSprite(-225.5, 206.66);
 				nuv.frames = Paths.getSparrowAtlas('backgrounds/' + curStage + '/nuvem');
 				nuv.animation.addByPrefix('idle', "nuvem", 2);
 				nuv.animation.play('idle');
@@ -133,7 +143,43 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				nuv.updateHitbox();
 				add(nuv);
 				
-				var pud:FNFSprite = new FNFSprite(678.5, -35).loadGraphic(Paths.image('backgrounds/' + curStage + '/pudim'));
+				red = new FNFSprite(-490, -200);
+				red.frames = Paths.getSparrowAtlas('backgrounds/' + curStage + '/fogos');
+				red.animation.addByPrefix('idle', "red", 12, false);
+				red.scrollFactor.set(0.67, 0.69);
+				red.scale.set(0.79, 0.79);
+				red.updateHitbox();
+				add(red);
+				redCooldown = FlxG.random.int(1, 8);
+				
+				pink = new FNFSprite(-100, 500);
+				pink.frames = Paths.getSparrowAtlas('backgrounds/' + curStage + '/fogos');
+				pink.animation.addByPrefix('idle', "pink", 12, false);
+				pink.scrollFactor.set(0.67, 0.69);
+				pink.scale.set(0.79, 0.79);
+				pink.updateHitbox();
+				add(pink);
+				pinkCooldown = FlxG.random.int(1, 8);
+				
+				yellow = new FNFSprite(580, -20);
+				yellow.frames = Paths.getSparrowAtlas('backgrounds/' + curStage + '/fogos');
+				yellow.animation.addByPrefix('idle', "yellow", 12, false);
+				yellow.scrollFactor.set(0.67, 0.69);
+				yellow.scale.set(0.79, 0.79);
+				yellow.updateHitbox();
+				add(yellow);
+				yellowCooldown = FlxG.random.int(1, 8);
+				
+				green = new FNFSprite(1280, 570);
+				green.frames = Paths.getSparrowAtlas('backgrounds/' + curStage + '/fogos');
+				green.animation.addByPrefix('idle', "green", 12, false);
+				green.scrollFactor.set(0.67, 0.69);
+				green.scale.set(0.79, 0.79);
+				green.updateHitbox();
+				add(green);
+				greenCooldown = FlxG.random.int(1, 8);
+				
+				var pud:FNFSprite = new FNFSprite(678.5, -25).loadGraphic(Paths.image('backgrounds/' + curStage + '/pudim'));
 				pud.scale.set(1.32, 1.32);
 				pud.updateHitbox();
 				pud.antialiasing = true;
@@ -283,11 +329,59 @@ class Stage extends FlxTypedGroup<FlxBasic>
 					trainStart();
 				}
 			case 'whithwerect':
-			if (curBeat % 4 == 0)
-			{
-			  grandMoon.alpha = 1;
-			  FlxTween.tween(grandMoon, {alpha: 0}, 0.50, {ease: FlxEase.linear});
-			}
+				if (curBeat % 4 == 0)
+				{
+				  grandMoon.alpha = 1;
+				  FlxTween.tween(grandMoon, {alpha: 0}, 0.50, {ease: FlxEase.linear});
+				}
+
+				redCooldown--;
+				if (redCooldown <= 0)
+				{
+					if (red.animation.curAnim != null)
+					{
+						red.animation.stop();
+						red.animation.curAnim.curFrame = 0;
+					}
+					red.animation.play('idle', true);
+					redCooldown = FlxG.random.int(4, 16);
+				}
+
+				pinkCooldown--;
+				if (pinkCooldown <= 0)
+				{
+					if (pink.animation.curAnim != null)
+					{
+						pink.animation.stop();
+						pink.animation.curAnim.curFrame = 0;
+					}
+					pink.animation.play('idle', true);
+					pinkCooldown = FlxG.random.int(4, 16);
+				}
+
+				yellowCooldown--;
+				if (yellowCooldown <= 0)
+				{
+					if (yellow.animation.curAnim != null)
+					{
+						yellow.animation.stop();
+						yellow.animation.curAnim.curFrame = 0;
+					}
+					yellow.animation.play('idle', true);
+					yellowCooldown = FlxG.random.int(4, 16);
+				}
+
+				greenCooldown--;
+				if (greenCooldown <= 0)
+				{
+					if (green.animation.curAnim != null)
+					{
+						green.animation.stop();
+						green.animation.curAnim.curFrame = 0;
+					}
+					green.animation.play('idle', true);
+					greenCooldown = FlxG.random.int(4, 16);
+				}
 		}
 	}
 
