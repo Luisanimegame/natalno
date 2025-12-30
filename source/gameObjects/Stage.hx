@@ -96,7 +96,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				bg.antialiasing = true;
 				add(bg);
 				
-				var pud:FNFSprite = new FNFSprite(678.5, -50).loadGraphic(Paths.image('backgrounds/' + curStage + '/pudim'));
+				var pud:FNFSprite = new FNFSprite(678.5, -35).loadGraphic(Paths.image('backgrounds/' + curStage + '/pudim'));
 				pud.scale.set(1.32, 1.32);
 				pud.updateHitbox();
 				pud.antialiasing = true;
@@ -124,7 +124,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				moon.antialiasing = true;
 				add(moon);
 				
-				var nuv:FNFSprite = new FNFSprite(-250, 350);
+				var nuv:FNFSprite = new FNFSprite(-255.5, 466.66);
 				nuv.frames = Paths.getSparrowAtlas('backgrounds/' + curStage + '/nuvem');
 				nuv.animation.addByPrefix('idle', "nuvem", 2);
 				nuv.animation.play('idle');
@@ -133,7 +133,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				nuv.updateHitbox();
 				add(nuv);
 				
-				var pud:FNFSprite = new FNFSprite(678.5, -50).loadGraphic(Paths.image('backgrounds/' + curStage + '/pudim'));
+				var pud:FNFSprite = new FNFSprite(678.5, -35).loadGraphic(Paths.image('backgrounds/' + curStage + '/pudim'));
 				pud.scale.set(1.32, 1.32);
 				pud.updateHitbox();
 				pud.antialiasing = true;
