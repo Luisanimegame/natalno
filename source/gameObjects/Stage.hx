@@ -103,7 +103,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				
 			case 'whithwerect':
 		  	cameraZoom = 0.72;
-				curStage = 'whithw';
+				curStage = 'whithwerect';
 			  
 			  var bg:FlxSprite = new FlxSprite(-2000, -2500).makeGraphic(6969, 6969, FlxColor.fromString('231752'));
 				bg.antialiasing = true;
