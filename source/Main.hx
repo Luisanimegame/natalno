@@ -65,8 +65,8 @@ class Main extends Sprite
 		],
 		[ // Essa coisa goofy aj
 			['newtrash'],
-			['noel'],
-			[FlxColor.fromRGB(215, 70, 109)],
+			['garoto'],
+			[FlxColor.fromRGB(81, 139, 255)],
 			'mais ja e ano novo caramb'
 		],
 	];
