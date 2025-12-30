@@ -46,7 +46,10 @@ class Stage extends FlxTypedGroup<FlxBasic>
 	var upperBoppers:FNFSprite;
 	var bottomBoppers:FNFSprite;
 	var santa:FNFSprite;
-
+	
+	var moon:FNFSprite;
+	var grandMoon:FNFSprite;
+	
 	var bgGirls:BackgroundGirls;
 
 	public var curStage:String;
@@ -121,10 +124,10 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				
 				var nuv:FNFSprite = new FNFSprite(-250, 350);
 				nuv.frames = Paths.getSparrowAtlas('backgrounds/' + curStage + '/nuvem');
-				nuvem.animation.addByPrefix('idle', "nuvem", 2);
-				nuvem.animation.play('idle');
-				nuvem.scrollFactor.set(0.89, 0.87);
-				add(nuvem);
+				nuv.animation.addByPrefix('idle', "nuvem", 2);
+				nuv.animation.play('idle');
+				nuv.scrollFactor.set(0.89, 0.87);
+				add(nuv);
 				
 				var pud:FNFSprite = new FNFSprite(678.5, -50).loadGraphic(Paths.image('backgrounds/' + curStage + '/pudim'));
 				pud.scale.set(1.32, 1.32);
@@ -174,7 +177,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		{
 			case 'stage':
 				gfVersion = 'fuckfuck';
-			case 'whithw' || 'whithwerect':
+			case 'whithw' | 'whithwerect':
 				gfVersion = 'girl';
 		}
 
