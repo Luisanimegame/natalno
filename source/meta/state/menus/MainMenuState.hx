@@ -86,9 +86,9 @@ class MainMenuState extends MusicBeatState
 	override function update(elapsed:Float)
 	{
 	  
-  for (option in [freeplay, options, idklool])
+  for (option in [freeplay, options, idklool]) //fuck you gagbo
   {
-    option.animation.play('idle');
+    option.animation.play('idle', true);
   }
 	 
 	if (!selectedSomethin)
