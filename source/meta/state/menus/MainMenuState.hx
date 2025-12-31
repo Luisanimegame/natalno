@@ -56,7 +56,6 @@ class MainMenuState extends MusicBeatState
     var idklool:FlxSprite = new FlxSprite(-85);
     idklool.frames = Paths.getSparrowAtlas('menus/base/idkloolmenu');
     idklool.animation.addByPrefix('idle', "porrafeia", 2);
-    idklool.animation.play('idle');
     idklool.updateHitbox();
     idklool.screenCenter();
     idklool.antialiasing = true;
@@ -65,7 +64,6 @@ class MainMenuState extends MusicBeatState
     freeplay = new FlxSprite(10, 350);
     freeplay.frames = Paths.getSparrowAtlas('menus/base/storymode');
     freeplay.animation.addByPrefix('idle', "freeplay", 2);
-    freeplay.animation.play('idle');
     freeplay.updateHitbox();
     freeplay.antialiasing = true;
     add(freeplay);
@@ -73,7 +71,6 @@ class MainMenuState extends MusicBeatState
     options = new FlxSprite(960, 400);
     options.frames = Paths.getSparrowAtlas('menus/base/config');
     options.animation.addByPrefix('idle', "config", 2);
-    options.animation.play('idle');
     options.updateHitbox();
     options.antialiasing = true;
     add(options);
@@ -87,13 +84,18 @@ class MainMenuState extends MusicBeatState
 	var selectedSomethin:Bool = false; //bro
 	override function update(elapsed:Float)
 	{
+	  
+  for (option in [freeplay, options, idklool])
+  {
+    option.animation.play('idle');
+  }
 	 
 	if (controls.BACK #if android || FlxG.android.justReleased.BACK #end && !selectedSomethin) {
 	Main.switchState(new TitleState());
 	selectedSomethin = true;
 	}
 	
-	if (controls.ACCEPT && !selectedSomethin)
+	if (!selectedSomethin)
 	{
 	 selectedSomethin = true;
 	 FlxG.sound.play(Paths.sound('confirmMenu'));
