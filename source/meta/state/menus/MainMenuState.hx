@@ -27,6 +27,7 @@ class MainMenuState extends MusicBeatState
 	var idklool:FlxSprite;
 	var freeplay:FlxSprite;
   var options:FlxSprite;
+  var idkloolmemama:Bool = true;
 	override function create()
 	{
 		super.create();
@@ -47,16 +48,18 @@ class MainMenuState extends MusicBeatState
     #end
 
 		// background
+		if (idkloolmemama){
 		bg = new FlxSprite(-85);
     bg.loadGraphic(Paths.image('menus/base/menualtBG'));
     bg.updateHitbox();
     bg.screenCenter();
     bg.antialiasing = true;
     add(bg);
+		}
     
     idklool = new FlxSprite(-85);
     idklool.frames = Paths.getSparrowAtlas('menus/base/idkloolmenu');
-    idklool.animation.addByPrefix('idle', "porrafeia", 2);
+    idklool.animation.addByPrefix('idle', "porrafeia", 2, true);
     idklool.updateHitbox();
     idklool.screenCenter();
     idklool.antialiasing = true;
@@ -64,14 +67,14 @@ class MainMenuState extends MusicBeatState
     
     freeplay = new FlxSprite(10, 350);
     freeplay.frames = Paths.getSparrowAtlas('menus/base/storymode');
-    freeplay.animation.addByPrefix('idle', "freeplay", 2);
+    freeplay.animation.addByPrefix('idle', "freeplay", 2, true);
     freeplay.updateHitbox();
     freeplay.antialiasing = true;
     add(freeplay);
     
     options = new FlxSprite(960, 400);
     options.frames = Paths.getSparrowAtlas('menus/base/config');
-    options.animation.addByPrefix('idle', "config", 2);
+    options.animation.addByPrefix('idle', "config", 2, true);
     options.updateHitbox();
     options.antialiasing = true;
     add(options);
@@ -80,13 +83,19 @@ class MainMenuState extends MusicBeatState
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
+		
+		new FlxTimer().start(2, function(tmr:FlxTimer)
+		{
+		if(bg.alpha == 1) FlxTween.tween(bg, {alpha: 0}, 2, {ease: FlxEase.linear});
+		else FlxTween.tween(bg, {alpha: 1}, 2, {ease: FlxEase.linear});
+		}, 0);
 	}
 	
 	var selectedSomethin:Bool = false; //bro
 	override function update(elapsed:Float)
 	{
 	  
-  for (option in [freeplay, options, idklool]) //fuck you gagbo
+  for (option in [freeplay, options, idklool])
   {
     option.animation.play('idle', true);
   }
