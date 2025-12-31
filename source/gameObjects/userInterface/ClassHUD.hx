@@ -108,7 +108,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 			barY).loadGraphic(Paths.image(ForeverTools.returnSkinAsset('grend', PlayState.assetModifier, PlayState.changeableSkin, 'UI')));
 		goofyBarBG.screenCenter(X);
 		goofyBarBG.alpha = 0.56;
-		goofyBarBG.scale.set(1.02, 1);
+		goofyBarBG.scale.set(1.01, 1);
 		goofyBarBG.updateHitbox();
 		add(goofyBarBG);
 
