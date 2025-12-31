@@ -41,6 +41,10 @@ import haxe.Json;
 import openfl.utils.Assets;
 import sys.io.File;
 
+#if desktop
+import meta.data.dependency.Discord;
+#end
+
 using StringTools;
 typedef GamePosic =
 {
@@ -51,10 +55,6 @@ typedef GamePosic =
 	gfx:Float,
 	gfy:Float
 }
-
-#if desktop
-import meta.data.dependency.Discord;
-#end
 
 class PlayState extends MusicBeatState
 {
