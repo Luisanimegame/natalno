@@ -1275,6 +1275,7 @@ class PlayState extends MusicBeatState
 		
 		final timing =  isLate ? "late" : "early";
 		var rating = ForeverAssets.generateRating('$daRating', (daRating == 'sick' ? allSicks : false), timing, assetModifier, changeableSkin, 'UI');
+		rating.alpha = 0.45;
 		if (cache) rating.alpha = 0.000001;
 		comboGroup.add(rating);
 
@@ -1340,6 +1341,7 @@ class PlayState extends MusicBeatState
 			// numScore.loadGraphic(Paths.image('UI/' + pixelModifier + 'num' + stringArray[scoreInt]));
 			var numScore = ForeverAssets.generateCombo('combo', stringArray[scoreInt], (!negative ? allSicks : false), assetModifier, changeableSkin, 'UI',
 				negative, createdColor, scoreInt);
+			numScore.alpha = 0.45;
 			if (cache) numScore.alpha = 0.000001;
 			comboGroup.add(numScore);
 
@@ -1509,17 +1511,95 @@ class PlayState extends MusicBeatState
 					vocals.volume = 0;
 			}
 		}
-
-		if (curSong.toLowerCase() == 'fresh')
-		{
-			switch (curBeat)
-			{
-				case 16 | 80:
-					gfSpeed = 2;
-				case 48 | 112:
-					gfSpeed = 1;
-			}
-		}
+		
+  	switch (curSong.toLowerCase())
+  	{
+  		case 'christrash':
+  			switch (curBeat)
+  			{
+  				case 32:
+  					stageBuild.cameraZoom = 0.7;
+  				case 64:
+  					stageBuild.cameraZoom = 0.69;
+  				case 128:
+  					stageBuild.cameraZoom = 0.578;
+  				case 160:
+  					stageBuild.cameraZoom = 0.72;
+  				case 192:
+  					stageBuild.cameraZoom = 0.545;
+  				case 256:
+  					stageBuild.cameraZoom = 0.62;
+  				case 260:
+  					stageBuild.cameraZoom = 0.70;
+  				case 264:
+  					stageBuild.cameraZoom = 0.62;
+  				case 268:
+  					stageBuild.cameraZoom = 0.70;
+  				case 272:
+  					stageBuild.cameraZoom = 0.75;
+  				case 276:
+  					stageBuild.cameraZoom = 0.81;
+  				case 280:
+  					stageBuild.cameraZoom = 0.75;
+  				case 284:
+  					stageBuild.cameraZoom = 0.81;
+  				case 288:
+  					stageBuild.cameraZoom = 0.62;
+  				case 292:
+  					stageBuild.cameraZoom = 0.70;
+  				case 296:
+  					stageBuild.cameraZoom = 0.62;
+  				case 300:
+  					stageBuild.cameraZoom = 0.70;
+  				case 304:
+  					stageBuild.cameraZoom = 0.75;
+  				case 308:
+  					stageBuild.cameraZoom = 0.81;
+  				case 312:
+  					stageBuild.cameraZoom = 0.75;
+  				case 316:
+  					stageBuild.cameraZoom = 0.9;
+  				case 320:
+  					stageBuild.cameraZoom = 0.62;
+  				case 352:
+  					stageBuild.cameraZoom = 0.79;
+  				case 384:
+  					stageBuild.cameraZoom = 0.7;
+  				case 448:
+  				  stageBuild.cameraZoom = 0.545;
+  				case 480:
+  					stageBuild.cameraZoom = 0.6;
+  				case 512:
+  					stageBuild.cameraZoom = 0.67;
+  			}
+  
+  		case 'newtrash':
+  			switch (curBeat)
+  			{
+  			 case 32:
+            stageBuild.cameraZoom = 1;
+         case 64:
+            stageBuild.cameraZoom = 0.785;
+         case 96:
+            stageBuild.cameraZoom = 0.6;
+         case 125:
+            stageBuild.cameraZoom = 0.67;
+         case 128:
+            stageBuild.cameraZoom = 0.7;
+         case 192:
+            stageBuild.cameraZoom = 0.875;
+         case 224:
+            stageBuild.cameraZoom = 0.92;
+         case 256:
+           stageBuild.cameraZoom = 0.94;
+         case 288:
+           stageBuild.cameraZoom = 0.7;
+         case 320:
+            stageBuild.cameraZoom = 0.76;
+         case 352:
+           stageBuild.cameraZoom = 0.72;
+  			}
+  	}
 
 		if (curSong.toLowerCase() == 'milf'
 			&& curBeat >= 168
