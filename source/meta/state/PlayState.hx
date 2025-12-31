@@ -1281,7 +1281,7 @@ class PlayState extends MusicBeatState
 
 		if (!Init.trueSettings.get('Simply Judgements'))
 		{
-			FlxTween.tween(rating, {alpha: 0}, 0.2, {
+			FlxTween.tween(rating, {alpha: 0}, 0.001, {
 				onComplete: function(tween:FlxTween)
 				{
 					rating.destroy();
@@ -1291,11 +1291,11 @@ class PlayState extends MusicBeatState
 		}
 		else
 		{
-			FlxTween.tween(rating, {y: rating.y + 20}, 0.2, {
+			FlxTween.tween(rating, {y: rating.y + 20}, 0.0001, {
 				type: FlxTweenType.BACKWARD,
 				ease: FlxEase.circOut
 			});
-			FlxTween.tween(rating, {"scale.x": 0, "scale.y": 0}, 0.1, {
+			FlxTween.tween(rating, {"scale.x": 0, "scale.y": 0}, 0.0001, {
 				onComplete: function(tween:FlxTween)
 				{
 					rating.destroy();
@@ -1310,7 +1310,6 @@ class PlayState extends MusicBeatState
 			if (Init.trueSettings.get('Fixed Judgements'))
 			{
 				// bound to camera
-				rating.camera = camHUD;
 				rating.screenCenter();
 			}
 
@@ -1348,7 +1347,7 @@ class PlayState extends MusicBeatState
 			// hardcoded lmao
 			if (!Init.trueSettings.get('Simply Judgements'))
 			{
-				FlxTween.tween(numScore, {alpha: 0}, 0.2, {
+				FlxTween.tween(numScore, {alpha: 0}, 0.0001, {
 					onComplete: function(tween:FlxTween)
 					{
 						numScore.destroy();
@@ -1362,7 +1361,7 @@ class PlayState extends MusicBeatState
 				numScore.y += 10;
 				numScore.x -= 95;
 				numScore.x -= ((comboString.length - 1) * 22);
-				FlxTween.tween(numScore, {y: numScore.y + 20}, 0.1, {
+				FlxTween.tween(numScore, {y: numScore.y + 20}, 0.0001, {
 					type: FlxTweenType.BACKWARD,
 					ease: FlxEase.circOut,
 				});
@@ -1852,6 +1851,8 @@ class PlayState extends MusicBeatState
 						});
 					}
 				});
+			case 'newtrash': // pq sim, ele e rebelde
+			  startSong();
 			default:
 				callTextbox();
 		}
@@ -1872,6 +1873,7 @@ class PlayState extends MusicBeatState
 			add(dialogueBox);
 		}
 		else
+		   
 			startCountdown();
 	}
 
