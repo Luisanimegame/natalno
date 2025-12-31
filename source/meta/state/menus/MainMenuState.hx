@@ -83,12 +83,6 @@ class MainMenuState extends MusicBeatState
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
-		
-		new FlxTimer().start(2, function(tmr:FlxTimer)
-		{
-		if(bg.alpha == 1) FlxTween.tween(bg, {alpha: 0}, 2, {ease: FlxEase.linear});
-		else FlxTween.tween(bg, {alpha: 1}, 2, {ease: FlxEase.linear});
-		}, 0);
 	}
 	
 	var selectedSomethin:Bool = false; //bro
