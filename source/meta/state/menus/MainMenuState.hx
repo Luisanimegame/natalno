@@ -24,6 +24,7 @@ class MainMenuState extends MusicBeatState
 {
 	
 	var bg:FlxSprite;
+	var idklool:FlxSprite;
 	var freeplay:FlxSprite;
   var options:FlxSprite;
 	override function create()
@@ -53,7 +54,7 @@ class MainMenuState extends MusicBeatState
     bg.antialiasing = true;
     add(bg);
     
-    var idklool:FlxSprite = new FlxSprite(-85);
+    idklool = new FlxSprite(-85);
     idklool.frames = Paths.getSparrowAtlas('menus/base/idkloolmenu');
     idklool.animation.addByPrefix('idle', "porrafeia", 2);
     idklool.updateHitbox();
