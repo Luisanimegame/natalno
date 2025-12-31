@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="config.png">
+	<!-- Created using the Spritesheet and XML generator -->
+	<!-- https://uncertainprod.github.io/FNF-Spritesheet-XML-generator-Web -->
+	<SubTexture name="config0000" x="305" y="0" width="303" height="147" frameX="0" frameY="1" frameWidth="303" frameHeight="151"/>
+	<SubTexture name="config0001" x="0" y="0" width="305" height="149" frameX="1" frameY="0" frameWidth="303" frameHeight="151"/>
+	<SubTexture name="config0002" x="0" y="149" width="301" height="149" frameX="1" frameY="-3" frameWidth="303" frameHeight="151"/>
+</TextureAtlas>
