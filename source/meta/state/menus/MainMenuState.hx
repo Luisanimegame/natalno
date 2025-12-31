@@ -91,15 +91,12 @@ class MainMenuState extends MusicBeatState
     option.animation.play('idle');
   }
 	 
-	if (controls.BACK #if android || FlxG.android.justReleased.BACK #end && !selectedSomethin) {
+	if (!selectedSomethin)
+	{
+	if (controls.BACK #if android || FlxG.android.justReleased.BACK #end) {
 	Main.switchState(new TitleState());
 	selectedSomethin = true;
 	}
-	
-	if (!selectedSomethin)
-	{
-	 selectedSomethin = true;
-	 FlxG.sound.play(Paths.sound('confirmMenu'));
 			
 	if (FlxG.mouse.overlaps(freeplay) && FlxG.mouse.justPressed)
   {
@@ -113,6 +110,11 @@ class MainMenuState extends MusicBeatState
   FlxG.mouse.visible = false;
   Main.switchState(new OptionsMenuState());
   }
+	}
+	
+	if (selectedSomethin)
+	{
+	  FlxG.sound.play(Paths.sound('confirmMenu'));
 	}
 	}
 }
