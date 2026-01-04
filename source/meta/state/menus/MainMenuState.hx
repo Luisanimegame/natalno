@@ -27,7 +27,7 @@ class MainMenuState extends MusicBeatState
 	var idklool:FlxSprite;
 	var freeplay:FlxSprite;
   var options:FlxSprite;
-  var idkloolmemama:Bool = true;
+  var idkloolmemata:Bool = true;
 	override function create()
 	{
 		super.create();
@@ -48,7 +48,7 @@ class MainMenuState extends MusicBeatState
     #end
 
 		// background
-		if (idkloolmemama){
+		if (idkloolmemata){
 		bg = new FlxSprite(-85);
     bg.loadGraphic(Paths.image('menus/base/menualtBG'));
     bg.updateHitbox();
@@ -119,5 +119,6 @@ class MainMenuState extends MusicBeatState
 	{
 	  FlxG.sound.play(Paths.sound('confirmMenu'));
 	}
+	super.update(elapsed);
 	}
 }
