@@ -63,7 +63,7 @@ class OptionsMenuState extends MusicBeatState
 				[
 					['Gameplay Settings', null],
 					['', null],
-					['Controller Mode', getFromOption],
+					//['Controller Mode', getFromOption],
 					['Downscroll', getFromOption],
 					['Centered Notefield', getFromOption],
 					['Ghost Tapping', getFromOption],
@@ -179,7 +179,7 @@ class OptionsMenuState extends MusicBeatState
 		curSelection = 0;
 		selectOption(curSelection);
 		
-		#if mobile addVPad(UP_DOWN, A_B_C); #end
+		#if mobile addVPad(FULL, A_B_C); #end
 	}
 
 	function selectOption(newSelection:Int, playSound:Bool = true)
