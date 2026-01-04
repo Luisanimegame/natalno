@@ -1271,40 +1271,34 @@ add(comboText); // Ou comboGroup.add(comboText)
 
 	public function displayRating(daRating:String, isLate:Bool, ?cache:Bool = false)
 {
-    // Cancela tween antigo para evitar conflitos
+    // Cancela tween antigo
     FlxTween.cancelTweensOf(ratingSprite);
 
-    final timing = isLate ? "late" : "early";
-    var assetPath = '$daRating'; // Ajuste se seus assets tiverem prefixos
-    ratingSprite.loadGraphic(Paths.image('UI/' + assetModifier + '/' + assetPath)); // Usa a lógica de paths do seu engine
+    // Carrega a imagem PNG individual pro rating (sistema original sem atlas/XML)
+    var assetPath = ForeverTools.returnSkinAsset(daRating, assetModifier, changeableSkin, 'UI');
+    ratingSprite.loadGraphic(Paths.image(assetPath)); // Carrega sick.png, good.png etc. diretamente
     ratingSprite.updateHitbox();
-    ratingSprite.alpha = (cache ? 0.000001 : 0.45); // Alpha baixo como você queria antes (0.45 para semi-transparente)
+    ratingSprite.alpha = (cache ? 0.000001 : 0.45);
 
     if (Init.trueSettings.get('Fixed Judgements'))
     {
         ratingSprite.screenCenter();
-        ratingSprite.y -= 50; // Ajuste posição se precisar (acima do combo)
+        ratingSprite.y -= 50;
     }
     else
     {
-        // Posição dinâmica, ex: baseado na strumline ou nota (ajuste se quiser)
         ratingSprite.x = FlxG.width / 2 - 100;
         ratingSprite.y = FlxG.height / 2 - 100;
     }
 
     if (!Init.trueSettings.get('Simply Judgements'))
     {
-        // Fade out rápido
         FlxTween.tween(ratingSprite, {alpha: 0}, 0.2, {
-            startDelay: Conductor.crochet * 0.001,
-            onComplete: function(twn:FlxTween) {
-                // Opcional: reset graphic se precisar
-            }
+            startDelay: Conductor.crochet * 0.001
         });
     }
     else
     {
-        // Animação simples de scale/posição
         ratingSprite.scale.set(1, 1);
         FlxTween.tween(ratingSprite, {y: ratingSprite.y + 20}, 0.1, {ease: FlxEase.circOut});
         FlxTween.tween(ratingSprite, {"scale.x": 0, "scale.y": 0, alpha: 0}, 0.1, {
@@ -1315,7 +1309,6 @@ add(comboText); // Ou comboGroup.add(comboText)
     if (!cache)
     {
         Timings.gottenJudgements.set(daRating, Timings.gottenJudgements.get(daRating) + 1);
-
         if (Timings.smallestRating != daRating)
         {
             if (Timings.judgementsMap.get(Timings.smallestRating)[0] < Timings.judgementsMap.get(daRating)[0])
@@ -1328,39 +1321,38 @@ add(comboText); // Ou comboGroup.add(comboText)
 
 	public function popUpCombo(?cache:Bool = false)
 {
-    // Cancela tween antigo para evitar conflitos
+    // Cancela tween antigo
     FlxTween.cancelTweensOf(comboText);
 
     var comboString:String = Std.string(combo);
     var negative = (combo < 0);
-    if (negative) comboString = '-' + comboString.substring(1); // Mostra negativo
+    if (negative) comboString = '-' + comboString.substring(1);
 
     comboText.text = comboString;
-    comboText.alpha = (cache ? 0.000001 : 0.45); // Alpha baixo como você queria
-    comboText.color = (negative ? FlxColor.RED : FlxColor.WHITE); // Opcional: vermelho para negativo
+    comboText.alpha = (cache ? 0.000001 : 0.45);
+
+    // Combo sempre branco, como pedido (vermelho só se negativo)
+    comboText.color = (negative ? FlxColor.RED : FlxColor.WHITE);
 
     if (Init.trueSettings.get('Fixed Judgements'))
     {
         comboText.screenCenter();
-        comboText.y += 50; // Abaixo do rating
+        comboText.y += 50;
     }
     else
     {
-        // Posição dinâmica
         comboText.x = FlxG.width / 2 - 50;
         comboText.y = FlxG.height / 2;
     }
 
     if (!Init.trueSettings.get('Simply Judgements'))
     {
-        // Fade out rápido
         FlxTween.tween(comboText, {alpha: 0}, 0.2, {
             startDelay: Conductor.crochet * 0.002
         });
     }
     else
     {
-        // Animação simples
         comboText.y += 10;
         FlxTween.tween(comboText, {y: comboText.y + 20}, 0.1, {ease: FlxEase.circOut});
         FlxTween.tween(comboText, {alpha: 0}, 0.1, {
