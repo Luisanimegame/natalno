@@ -55,7 +55,7 @@ class Init extends FlxState
 			NOT_FORCED
 		],
 		'Controller Mode' => [
-			false,
+			true,
 			Checkmark,
 			'Whether to use a controller instead of the keyboard to play.',
 			NOT_FORCED
@@ -150,7 +150,7 @@ class Init extends FlxState
 		],
 		"Opaque Holds" => [false, Checkmark, "Huh, why isnt the trail cut off?", NOT_FORCED],
 		'Ghost Tapping' => [
-			false,
+			true,
 			Checkmark,
 			"Enables Ghost Tapping, allowing you to press inputs without missing.",
 			NOT_FORCED
@@ -176,7 +176,7 @@ class Init extends FlxState
 			NOT_FORCED
 		],
 		'Simply Judgements' => [
-			false,
+			true,
 			Checkmark,
 			"Simplifies the judgement animations, displaying only one judgement / rating sprite at a time.",
 			NOT_FORCED
