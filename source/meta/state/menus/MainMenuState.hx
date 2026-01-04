@@ -48,14 +48,12 @@ class MainMenuState extends MusicBeatState
     #end
 
 		// background
-		if (idkloolmemata){
 		bg = new FlxSprite(-85);
     bg.loadGraphic(Paths.image('menus/base/menualtBG'));
     bg.updateHitbox();
     bg.screenCenter();
     bg.antialiasing = true;
     add(bg);
-		}
     
     idklool = new FlxSprite(-85);
     idklool.frames = Paths.getSparrowAtlas('menus/base/idkloolmenu');
@@ -63,6 +61,7 @@ class MainMenuState extends MusicBeatState
     idklool.updateHitbox();
     idklool.screenCenter();
     idklool.antialiasing = true;
+	idklool.animation.play('idle');
     add(idklool);
     
     freeplay = new FlxSprite(10, 350);
@@ -70,6 +69,7 @@ class MainMenuState extends MusicBeatState
     freeplay.animation.addByPrefix('idle', "freeplay", 2, true);
     freeplay.updateHitbox();
     freeplay.antialiasing = true;
+	freeplay.animation.play('idle');
     add(freeplay);
     
     options = new FlxSprite(960, 400);
@@ -77,6 +77,7 @@ class MainMenuState extends MusicBeatState
     options.animation.addByPrefix('idle', "config", 2, true);
     options.updateHitbox();
     options.antialiasing = true;
+	options.animation.play('idle');
     add(options);
 
 		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, "Forever Engine Legacy v" + Main.gameVersion, 12);
