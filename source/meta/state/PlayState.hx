@@ -110,6 +110,9 @@ class PlayState extends MusicBeatState
 	public static var deaths:Int = 0; // 64
 	public var combo:Int = 0;
 	public var misses:Int = 0;
+	
+	var ratingSprite:FlxSprite;
+var comboText:FlxText;
 
 	public var generatedMusic:Bool = false;
 
@@ -204,13 +207,8 @@ class PlayState extends MusicBeatState
 		if (SONG.stage != null)
 			curStage = SONG.stage;
 
-		comboGroup = new FlxSpriteGroup();
-		if (Init.trueSettings.get('Fixed Judgements'))
-			comboGroup.camera = camHUD;
-
 		// cache shit
-		displayRating('sick', true, true);
-		popUpCombo(true);
+		
 		//
 
 		stageBuild = new Stage(curStage);
@@ -293,7 +291,19 @@ class PlayState extends MusicBeatState
 		startingSong = startedCountdown = true;
 
 		// initialize ui elements
-		add(comboGroup);
+		
+		// Cria sprite reutilizável para rating (inicia invisível)
+ratingSprite = new FlxSprite();
+ratingSprite.alpha = 0;
+ratingSprite.antialiasing = true;
+add(ratingSprite); // Ou comboGroup.add(ratingSprite) se preferir no grupo
+
+// Cria texto reutilizável para combo (inicia invisível, usa fonte VCR típica de FNF)
+comboText = new FlxText(0, 0, 0, "", 32);
+comboText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+comboText.alpha = 0;
+comboText.antialiasing = true;
+add(comboText); // Ou comboGroup.add(comboText)
 
 		//
 		var placement = (FlxG.width * 0.5);
@@ -1258,120 +1268,105 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	public function displayRating(daRating:String, isLate: Bool, ?cache:Bool = false)
-	{
-		if (Init.trueSettings.get('Simply Judgements') && comboGroup.members.length > 0)
-		{
-			for (sprite in comboGroup.members) {
-				if (sprite != null) sprite.destroy();
-				comboGroup.remove(sprite);
-			}
-		}
+	public function displayRating(daRating:String, isLate:Bool, ?cache:Bool = false)
+{
+    // Cancela tween antigo para evitar conflitos
+    FlxTween.cancelTweensOf(ratingSprite);
 
-		/* so you might be asking
-			"oh but if the rating isn't sick why not just reset it"
-			because miss judgements can pop, and they dont mess with your sick combo
-		*/
-		
-		final timing =  isLate ? "late" : "early";
-		var rating = ForeverAssets.generateRating('$daRating', (daRating == 'sick' ? allSicks : false), timing, assetModifier, changeableSkin, 'UI');
-		rating.alpha = 0.45;
-		if (cache) rating.alpha = 0.000001;
-		comboGroup.add(rating);
+    final timing = isLate ? "late" : "early";
+    var assetPath = '$daRating'; // Ajuste se seus assets tiverem prefixos
+    ratingSprite.loadGraphic(Paths.image('UI/' + assetModifier + '/' + assetPath)); // Usa a lógica de paths do seu engine
+    ratingSprite.updateHitbox();
+    ratingSprite.alpha = (cache ? 0.000001 : 0.45); // Alpha baixo como você queria antes (0.45 para semi-transparente)
 
-		if (!Init.trueSettings.get('Simply Judgements'))
-		{
-			FlxTween.tween(rating, {alpha: 0}, 0.001, {
-				onComplete: function(tween:FlxTween)
-				{
-					rating.destroy();
-				},
-				startDelay: Conductor.crochet * 0.00125
-			});
-		}
-		else
-		{
-			FlxTween.tween(rating, {y: rating.y + 20}, 0.0001, {
-				type: FlxTweenType.BACKWARD,
-				ease: FlxEase.circOut
-			});
-			FlxTween.tween(rating, {"scale.x": 0, "scale.y": 0}, 0.0001, {
-				onComplete: function(tween:FlxTween)
-				{
-					rating.destroy();
-				},
-				startDelay: Conductor.crochet * 0.00125
-			});
-		}
-		// */
+    if (Init.trueSettings.get('Fixed Judgements'))
+    {
+        ratingSprite.screenCenter();
+        ratingSprite.y -= 50; // Ajuste posição se precisar (acima do combo)
+    }
+    else
+    {
+        // Posição dinâmica, ex: baseado na strumline ou nota (ajuste se quiser)
+        ratingSprite.x = FlxG.width / 2 - 100;
+        ratingSprite.y = FlxG.height / 2 - 100;
+    }
 
-		if (!cache)
-		{
-			if (Init.trueSettings.get('Fixed Judgements'))
-			{
-				// bound to camera
-				rating.screenCenter();
-			}
+    if (!Init.trueSettings.get('Simply Judgements'))
+    {
+        // Fade out rápido
+        FlxTween.tween(ratingSprite, {alpha: 0}, 0.2, {
+            startDelay: Conductor.crochet * 0.001,
+            onComplete: function(twn:FlxTween) {
+                // Opcional: reset graphic se precisar
+            }
+        });
+    }
+    else
+    {
+        // Animação simples de scale/posição
+        ratingSprite.scale.set(1, 1);
+        FlxTween.tween(ratingSprite, {y: ratingSprite.y + 20}, 0.1, {ease: FlxEase.circOut});
+        FlxTween.tween(ratingSprite, {"scale.x": 0, "scale.y": 0, alpha: 0}, 0.1, {
+            startDelay: Conductor.crochet * 0.001
+        });
+    }
 
-			// return the actual rating to the array of judgements
-			Timings.gottenJudgements.set(daRating, Timings.gottenJudgements.get(daRating) + 1);
+    if (!cache)
+    {
+        Timings.gottenJudgements.set(daRating, Timings.gottenJudgements.get(daRating) + 1);
 
-			// set new smallest rating
-			if (Timings.smallestRating != daRating)
-			{
-				if (Timings.judgementsMap.get(Timings.smallestRating)[0] < Timings.judgementsMap.get(daRating)[0])
-					Timings.smallestRating = daRating;
-			}
-		}
-	}
+        if (Timings.smallestRating != daRating)
+        {
+            if (Timings.judgementsMap.get(Timings.smallestRating)[0] < Timings.judgementsMap.get(daRating)[0])
+                Timings.smallestRating = daRating;
+        }
+    }
+}
 
 	private var createdColor = FlxColor.fromRGB(204, 66, 66);
 
-	function popUpCombo(?cache:Bool = false)
-	{
-		var comboString:String = Std.string(combo);
-		var negative = false;
-		if ((comboString.startsWith('-')) || (combo == 0))
-			negative = true;
-		var stringArray:Array<String> = comboString.split("");
+	public function popUpCombo(?cache:Bool = false)
+{
+    // Cancela tween antigo para evitar conflitos
+    FlxTween.cancelTweensOf(comboText);
 
-		for (scoreInt in 0...stringArray.length)
-		{
-			// numScore.loadGraphic(Paths.image('UI/' + pixelModifier + 'num' + stringArray[scoreInt]));
-			var numScore = ForeverAssets.generateCombo('combo', stringArray[scoreInt], (!negative ? allSicks : false), assetModifier, changeableSkin, 'UI',
-				negative, createdColor, scoreInt);
-			numScore.alpha = 0.45;
-			if (cache) numScore.alpha = 0.000001;
-			comboGroup.add(numScore);
+    var comboString:String = Std.string(combo);
+    var negative = (combo < 0);
+    if (negative) comboString = '-' + comboString.substring(1); // Mostra negativo
 
-			// hardcoded lmao
-			if (!Init.trueSettings.get('Simply Judgements'))
-			{
-				FlxTween.tween(numScore, {alpha: 0}, 0.0001, {
-					onComplete: function(tween:FlxTween)
-					{
-						numScore.destroy();
-					},
-					startDelay: Conductor.crochet * 0.002
-				});
-			}
-			else
-			{
-				// centers combo
-				numScore.y += 10;
-				numScore.x -= 95;
-				numScore.x -= ((comboString.length - 1) * 22);
-				FlxTween.tween(numScore, {y: numScore.y + 20}, 0.0001, {
-					type: FlxTweenType.BACKWARD,
-					ease: FlxEase.circOut,
-				});
-			}
-			// hardcoded lmao
-			if (Init.trueSettings.get('Fixed Judgements'))
-				numScore.y += 50;
-			numScore.x += 100;
-		}
-	}
+    comboText.text = comboString;
+    comboText.alpha = (cache ? 0.000001 : 0.45); // Alpha baixo como você queria
+    comboText.color = (negative ? FlxColor.RED : FlxColor.WHITE); // Opcional: vermelho para negativo
+
+    if (Init.trueSettings.get('Fixed Judgements'))
+    {
+        comboText.screenCenter();
+        comboText.y += 50; // Abaixo do rating
+    }
+    else
+    {
+        // Posição dinâmica
+        comboText.x = FlxG.width / 2 - 50;
+        comboText.y = FlxG.height / 2;
+    }
+
+    if (!Init.trueSettings.get('Simply Judgements'))
+    {
+        // Fade out rápido
+        FlxTween.tween(comboText, {alpha: 0}, 0.2, {
+            startDelay: Conductor.crochet * 0.002
+        });
+    }
+    else
+    {
+        // Animação simples
+        comboText.y += 10;
+        FlxTween.tween(comboText, {y: comboText.y + 20}, 0.1, {ease: FlxEase.circOut});
+        FlxTween.tween(comboText, {alpha: 0}, 0.1, {
+            startDelay: Conductor.crochet * 0.002
+        });
+    }
+}
 
 	function healthCall(?ratingMultiplier:Float = 0)
 	{
