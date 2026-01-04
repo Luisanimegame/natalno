@@ -1271,44 +1271,64 @@ add(comboText); // Ou comboGroup.add(comboText)
 
 	public function displayRating(daRating:String, isLate:Bool, ?cache:Bool = false)
 {
-    // Cancela tween antigo
+    // Cancela tween antigo para evitar conflitos
     FlxTween.cancelTweensOf(ratingSprite);
 
-    // Carrega a imagem PNG individual pro rating (sistema original sem atlas/XML)
-    var assetPath = ForeverTools.returnSkinAsset(daRating, assetModifier, changeableSkin, 'UI');
-    ratingSprite.loadGraphic(Paths.image(assetPath)); // Carrega sick.png, good.png etc. diretamente
+    final timing = isLate ? "late" : "early";
+    // Cria temp sprite com a lógica original para copiar o graphic
+    var tempRating = ForeverAssets.generateRating('$daRating', (daRating == 'sick' ? allSicks : false), timing, assetModifier, changeableSkin, 'UI');
+    // Copia o graphic pro sprite reutilizável (mantém o mesmo PNG e propriedades)
+    ratingSprite.loadGraphic(tempRating.graphic);
+    ratingSprite.antialiasing = tempRating.antialiasing;
+    ratingSprite.setGraphicSize(Std.int(tempRating.width), Std.int(tempRating.height));
     ratingSprite.updateHitbox();
-    ratingSprite.alpha = (cache ? 0.000001 : 0.45);
+    tempRating.destroy(); // Destroi o temp pra não leak memory
 
-    if (Init.trueSettings.get('Fixed Judgements'))
+    ratingSprite.alpha = (cache ? 0.000001 : 0.45); // Alpha baixo como você queria
+
+    if (!cache)
     {
-        ratingSprite.screenCenter();
-        ratingSprite.y -= 50;
-    }
-    else
-    {
-        ratingSprite.x = FlxG.width / 2 - 100;
-        ratingSprite.y = FlxG.height / 2 - 100;
+        if (Init.trueSettings.get('Fixed Judgements'))
+        {
+            // bound to camera, como original
+            ratingSprite.camera = camHUD;
+            ratingSprite.screenCenter();
+            ratingSprite.y -= 50; // Ajuste se precisar (acima do combo)
+        }
+        else
+        {
+            // Posição dinâmica, ex: baseado na strumline ou nota (ajuste se quiser)
+            ratingSprite.x = FlxG.width / 2 - 100;
+            ratingSprite.y = FlxG.height / 2 - 100;
+        }
     }
 
     if (!Init.trueSettings.get('Simply Judgements'))
     {
+        // Fade out rápido, como original
         FlxTween.tween(ratingSprite, {alpha: 0}, 0.2, {
-            startDelay: Conductor.crochet * 0.001
+            startDelay: Conductor.crochet * 0.00125
         });
     }
     else
     {
+        // Animação simples de scale/posição, como original
         ratingSprite.scale.set(1, 1);
-        FlxTween.tween(ratingSprite, {y: ratingSprite.y + 20}, 0.1, {ease: FlxEase.circOut});
+        FlxTween.tween(ratingSprite, {y: ratingSprite.y + 20}, 0.2, {
+            type: FlxTweenType.BACKWARD,
+            ease: FlxEase.circOut
+        });
         FlxTween.tween(ratingSprite, {"scale.x": 0, "scale.y": 0, alpha: 0}, 0.1, {
-            startDelay: Conductor.crochet * 0.001
+            startDelay: Conductor.crochet * 0.00125
         });
     }
 
     if (!cache)
     {
+        // return the actual rating to the array of judgements
         Timings.gottenJudgements.set(daRating, Timings.gottenJudgements.get(daRating) + 1);
+
+        // set new smallest rating
         if (Timings.smallestRating != daRating)
         {
             if (Timings.judgementsMap.get(Timings.smallestRating)[0] < Timings.judgementsMap.get(daRating)[0])
@@ -1321,38 +1341,44 @@ add(comboText); // Ou comboGroup.add(comboText)
 
 	public function popUpCombo(?cache:Bool = false)
 {
-    // Cancela tween antigo
+    // Cancela tween antigo para evitar conflitos
     FlxTween.cancelTweensOf(comboText);
 
     var comboString:String = Std.string(combo);
     var negative = (combo < 0);
-    if (negative) comboString = '-' + comboString.substring(1);
+    if (negative) comboString = '-' + comboString.substring(1); // Mostra negativo
 
     comboText.text = comboString;
-    comboText.alpha = (cache ? 0.000001 : 0.45);
+    comboText.alpha = (cache ? 0.000001 : 0.45); // Alpha baixo como você queria
+    comboText.color = FlxColor.WHITE; // Sempre branco, como pedido (vermelho só se negativo, mas você disse branco mesmo)
+    if (negative) comboText.color = FlxColor.RED; // Opcional, mas mantive pra negativo
 
-    // Combo sempre branco, como pedido (vermelho só se negativo)
-    comboText.color = (negative ? FlxColor.RED : FlxColor.WHITE);
-
-    if (Init.trueSettings.get('Fixed Judgements'))
+    if (!cache)
     {
-        comboText.screenCenter();
-        comboText.y += 50;
-    }
-    else
-    {
-        comboText.x = FlxG.width / 2 - 50;
-        comboText.y = FlxG.height / 2;
+        if (Init.trueSettings.get('Fixed Judgements'))
+        {
+            comboText.camera = camHUD;
+            comboText.screenCenter();
+            comboText.y += 50; // Abaixo do rating
+        }
+        else
+        {
+            // Posição dinâmica
+            comboText.x = FlxG.width / 2 - 50;
+            comboText.y = FlxG.height / 2;
+        }
     }
 
     if (!Init.trueSettings.get('Simply Judgements'))
     {
+        // Fade out rápido
         FlxTween.tween(comboText, {alpha: 0}, 0.2, {
             startDelay: Conductor.crochet * 0.002
         });
     }
     else
     {
+        // Animação simples
         comboText.y += 10;
         FlxTween.tween(comboText, {y: comboText.y + 20}, 0.1, {ease: FlxEase.circOut});
         FlxTween.tween(comboText, {alpha: 0}, 0.1, {
