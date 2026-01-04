@@ -30,6 +30,7 @@ import meta.*;
 import meta.MusicBeat.MusicBeatState;
 import meta.data.*;
 import meta.data.Song.SwagSong;
+import flixel.text.FlxText;
 import meta.state.charting.*;
 import meta.state.menus.*;
 import meta.subState.*;
