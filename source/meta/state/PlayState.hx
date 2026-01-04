@@ -30,7 +30,6 @@ import meta.*;
 import meta.MusicBeat.MusicBeatState;
 import meta.data.*;
 import meta.data.Song.SwagSong;
-import flixel.text.FlxText;
 import meta.state.charting.*;
 import meta.state.menus.*;
 import meta.subState.*;
@@ -38,7 +37,6 @@ import openfl.display.GraphicsShader;
 import openfl.events.KeyboardEvent;
 import openfl.filters.ShaderFilter;
 import openfl.media.Sound;
-import haxe.Json;
 import openfl.utils.Assets;
 import sys.io.File;
 
@@ -111,9 +109,6 @@ class PlayState extends MusicBeatState
 	public static var deaths:Int = 0; // 64
 	public var combo:Int = 0;
 	public var misses:Int = 0;
-	
-	var ratingSprite:FlxSprite;
-var comboText:FlxText;
 
 	public var generatedMusic:Bool = false;
 
@@ -208,8 +203,13 @@ var comboText:FlxText;
 		if (SONG.stage != null)
 			curStage = SONG.stage;
 
+		comboGroup = new FlxSpriteGroup();
+		if (Init.trueSettings.get('Fixed Judgements'))
+			comboGroup.camera = camHUD;
+
 		// cache shit
-		
+		//displayRating('sick', true, true);
+		//popUpCombo(true);
 		//
 
 		stageBuild = new Stage(curStage);
@@ -292,19 +292,7 @@ var comboText:FlxText;
 		startingSong = startedCountdown = true;
 
 		// initialize ui elements
-		
-		// Cria sprite reutilizável para rating (inicia invisível)
-ratingSprite = new FlxSprite();
-ratingSprite.alpha = 0;
-ratingSprite.antialiasing = true;
-add(ratingSprite); // Ou comboGroup.add(ratingSprite) se preferir no grupo
-
-// Cria texto reutilizável para combo (inicia invisível, usa fonte VCR típica de FNF)
-comboText = new FlxText(0, 0, 0, "", 32);
-comboText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-comboText.alpha = 0;
-comboText.antialiasing = true;
-add(comboText); // Ou comboGroup.add(comboText)
+		add(comboGroup);
 
 		//
 		var placement = (FlxG.width * 0.5);
@@ -1269,111 +1257,121 @@ add(comboText); // Ou comboGroup.add(comboText)
 		}
 	}
 
-	public function displayRating(daRating:String, isLate:Bool, ?cache:Bool = false)
-{
-    // Cancela tween antigo para evitar conflitos
-    FlxTween.cancelTweensOf(ratingSprite);
+	public function displayRating(daRating:String, isLate: Bool, ?cache:Bool = false)
+	{
+		if (Init.trueSettings.get('Simply Judgements') && comboGroup.members.length > 0)
+		{
+			for (sprite in comboGroup.members) {
+				if (sprite != null) sprite.destroy();
+				comboGroup.remove(sprite);
+			}
+		}
 
-    final timing = isLate ? "late" : "early";
-    // Usa a lógica original pra gerar o rating temp e copiar pro reutilizável (mesmo PNG, propriedades, sem mudar local)
-    var tempRating = ForeverAssets.generateRating('$daRating', (daRating == 'sick' ? allSicks : false), timing, assetModifier, changeableSkin, 'UI');
-    ratingSprite.loadGraphic(tempRating.graphic);
-    ratingSprite.antialiasing = tempRating.antialiasing;
-    ratingSprite.setGraphicSize(Std.int(tempRating.width), Std.int(tempRating.height));
-    ratingSprite.updateHitbox();
-    tempRating.destroy(); // Destroi temp pra não leak
+		/* so you might be asking
+			"oh but if the rating isn't sick why not just reset it"
+			because miss judgements can pop, and they dont mess with your sick combo
+		*/
+		
+		final timing =  isLate ? "late" : "early";
+		var rating = ForeverAssets.generateRating('$daRating', (daRating == 'sick' ? allSicks : false), timing, assetModifier, changeableSkin, 'UI');
+		if (cache) rating.alpha = 0.000001;
+		rating.alpha = 0.32;
+		comboGroup.add(rating);
 
-    ratingSprite.alpha = (cache ? 0.000001 : 0.45); // Alpha baixo
+		if (!Init.trueSettings.get('Simply Judgements'))
+		{
+			FlxTween.tween(rating, {alpha: 0}, 0.2, {
+				onComplete: function(tween:FlxTween)
+				{
+					rating.destroy();
+				},
+				startDelay: Conductor.crochet * 0.00125
+			});
+		}
+		else
+		{
+			FlxTween.tween(rating, {y: rating.y + 20}, 0.2, {
+				type: FlxTweenType.BACKWARD,
+				ease: FlxEase.circOut
+			});
+			FlxTween.tween(rating, {"scale.x": 0, "scale.y": 0}, 0.1, {
+				onComplete: function(tween:FlxTween)
+				{
+					rating.destroy();
+				},
+				startDelay: Conductor.crochet * 0.00125
+			});
+		}
+		// */
 
-    if (!cache)
-    {
-        if (Init.trueSettings.get('Fixed Judgements'))
-        {
-            // bound to camera
-            ratingSprite.camera = camHUD;
-            ratingSprite.screenCenter();
-        }
-        else
-        {
-            ratingSprite.x = FlxG.width / 2 - 100;
-            ratingSprite.y = FlxG.height / 2 - 100;
-        }
-    }
+		if (!cache)
+		{
+			if (Init.trueSettings.get('Fixed Judgements'))
+			{
+				// bound to camera
+				rating.camera = camHUD;
+				rating.screenCenter();
+			}
 
-    if (!Init.trueSettings.get('Simply Judgements'))
-    {
-        FlxTween.tween(ratingSprite, {alpha: 0}, 0.2, {
-            startDelay: Conductor.crochet * 0.00125
-        });
-    }
-    else
-    {
-        FlxTween.tween(ratingSprite, {y: ratingSprite.y + 20}, 0.2, {
-            type: FlxTweenType.BACKWARD,
-            ease: FlxEase.circOut
-        });
-        FlxTween.tween(ratingSprite, {"scale.x": 0, "scale.y": 0, alpha: 0}, 0.1, {
-            startDelay: Conductor.crochet * 0.00125
-        });
-    }
+			// return the actual rating to the array of judgements
+			Timings.gottenJudgements.set(daRating, Timings.gottenJudgements.get(daRating) + 1);
 
-    if (!cache)
-    {
-        Timings.gottenJudgements.set(daRating, Timings.gottenJudgements.get(daRating) + 1);
-
-        if (Timings.smallestRating != daRating)
-        {
-            if (Timings.judgementsMap.get(Timings.smallestRating)[0] < Timings.judgementsMap.get(daRating)[0])
-                Timings.smallestRating = daRating;
-        }
-    }
-}
+			// set new smallest rating
+			if (Timings.smallestRating != daRating)
+			{
+				if (Timings.judgementsMap.get(Timings.smallestRating)[0] < Timings.judgementsMap.get(daRating)[0])
+					Timings.smallestRating = daRating;
+			}
+		}
+	}
 
 	private var createdColor = FlxColor.fromRGB(204, 66, 66);
 
-	public function popUpCombo(?cache:Bool = false)
-{
-    // Cancela tween antigo para evitar conflitos
-    FlxTween.cancelTweensOf(comboText);
+	function popUpCombo(?cache:Bool = false)
+	{
+		var comboString:String = Std.string(combo);
+		var negative = false;
+		if ((comboString.startsWith('-')) || (combo == 0))
+			negative = true;
+		var stringArray:Array<String> = comboString.split("");
 
-    var comboString:String = Std.string(combo);
-    var negative = (combo < 0);
-    if (negative) comboString = '-' + comboString.substring(1);
+		for (scoreInt in 0...stringArray.length)
+		{
+			// numScore.loadGraphic(Paths.image('UI/' + pixelModifier + 'num' + stringArray[scoreInt]));
+			var numScore = ForeverAssets.generateCombo('combo', stringArray[scoreInt], (!negative ? allSicks : false), assetModifier, changeableSkin, 'UI',
+				negative, createdColor, scoreInt);
+			if (cache) numScore.alpha = 0.000001;
+			numScore.alpha = 0.32;
+			comboGroup.add(numScore);
 
-    comboText.text = comboString;
-    comboText.alpha = (cache ? 0.000001 : 0.45);
-    comboText.color = FlxColor.WHITE; // Branco mesmo, como pedido
-
-    if (!cache)
-    {
-        if (Init.trueSettings.get('Fixed Judgements'))
-        {
-            comboText.camera = camHUD;
-            comboText.screenCenter();
-            comboText.y += 50;
-        }
-        else
-        {
-            comboText.x = FlxG.width / 2 - 50;
-            comboText.y = FlxG.height / 2;
-        }
-    }
-
-    if (!Init.trueSettings.get('Simply Judgements'))
-    {
-        FlxTween.tween(comboText, {alpha: 0}, 0.2, {
-            startDelay: Conductor.crochet * 0.002
-        });
-    }
-    else
-    {
-        comboText.y += 10;
-        FlxTween.tween(comboText, {y: comboText.y + 20}, 0.1, {ease: FlxEase.circOut});
-        FlxTween.tween(comboText, {alpha: 0}, 0.1, {
-            startDelay: Conductor.crochet * 0.002
-        });
-    }
-}
+			// hardcoded lmao
+			if (!Init.trueSettings.get('Simply Judgements'))
+			{
+				FlxTween.tween(numScore, {alpha: 0}, 0.2, {
+					onComplete: function(tween:FlxTween)
+					{
+						numScore.destroy();
+					},
+					startDelay: Conductor.crochet * 0.002
+				});
+			}
+			else
+			{
+				// centers combo
+				numScore.y += 10;
+				numScore.x -= 95;
+				numScore.x -= ((comboString.length - 1) * 22);
+				FlxTween.tween(numScore, {y: numScore.y + 20}, 0.1, {
+					type: FlxTweenType.BACKWARD,
+					ease: FlxEase.circOut,
+				});
+			}
+			// hardcoded lmao
+			if (Init.trueSettings.get('Fixed Judgements'))
+				numScore.y += 50;
+			numScore.x += 100;
+		}
+	}
 
 	function healthCall(?ratingMultiplier:Float = 0)
 	{
@@ -1512,95 +1510,17 @@ add(comboText); // Ou comboGroup.add(comboText)
 					vocals.volume = 0;
 			}
 		}
-		
-  	switch (curSong.toLowerCase())
-  	{
-  		case 'christrash':
-  			switch (curBeat)
-  			{
-  				case 32:
-  					stageBuild.cameraZoom = 0.7;
-  				case 64:
-  					stageBuild.cameraZoom = 0.69;
-  				case 128:
-  					stageBuild.cameraZoom = 0.578;
-  				case 160:
-  					stageBuild.cameraZoom = 0.72;
-  				case 192:
-  					stageBuild.cameraZoom = 0.545;
-  				case 256:
-  					stageBuild.cameraZoom = 0.62;
-  				case 260:
-  					stageBuild.cameraZoom = 0.70;
-  				case 264:
-  					stageBuild.cameraZoom = 0.62;
-  				case 268:
-  					stageBuild.cameraZoom = 0.70;
-  				case 272:
-  					stageBuild.cameraZoom = 0.75;
-  				case 276:
-  					stageBuild.cameraZoom = 0.81;
-  				case 280:
-  					stageBuild.cameraZoom = 0.75;
-  				case 284:
-  					stageBuild.cameraZoom = 0.81;
-  				case 288:
-  					stageBuild.cameraZoom = 0.62;
-  				case 292:
-  					stageBuild.cameraZoom = 0.70;
-  				case 296:
-  					stageBuild.cameraZoom = 0.62;
-  				case 300:
-  					stageBuild.cameraZoom = 0.70;
-  				case 304:
-  					stageBuild.cameraZoom = 0.75;
-  				case 308:
-  					stageBuild.cameraZoom = 0.81;
-  				case 312:
-  					stageBuild.cameraZoom = 0.75;
-  				case 316:
-  					stageBuild.cameraZoom = 0.9;
-  				case 320:
-  					stageBuild.cameraZoom = 0.62;
-  				case 352:
-  					stageBuild.cameraZoom = 0.79;
-  				case 384:
-  					stageBuild.cameraZoom = 0.7;
-  				case 448:
-  				  stageBuild.cameraZoom = 0.545;
-  				case 480:
-  					stageBuild.cameraZoom = 0.6;
-  				case 512:
-  					stageBuild.cameraZoom = 0.67;
-  			}
-  
-  		case 'newtrash':
-  			switch (curBeat)
-  			{
-  			 case 32:
-            stageBuild.cameraZoom = 1;
-         case 64:
-            stageBuild.cameraZoom = 0.785;
-         case 96:
-            stageBuild.cameraZoom = 0.6;
-         case 125:
-            stageBuild.cameraZoom = 0.67;
-         case 128:
-            stageBuild.cameraZoom = 0.7;
-         case 192:
-            stageBuild.cameraZoom = 0.875;
-         case 224:
-            stageBuild.cameraZoom = 0.92;
-         case 256:
-           stageBuild.cameraZoom = 0.94;
-         case 288:
-           stageBuild.cameraZoom = 0.7;
-         case 320:
-            stageBuild.cameraZoom = 0.76;
-         case 352:
-           stageBuild.cameraZoom = 0.72;
-  			}
-  	}
+
+		if (curSong.toLowerCase() == 'fresh')
+		{
+			switch (curBeat)
+			{
+				case 16 | 80:
+					gfSpeed = 2;
+				case 48 | 112:
+					gfSpeed = 1;
+			}
+		}
 
 		if (curSong.toLowerCase() == 'milf'
 			&& curBeat >= 168
@@ -1853,8 +1773,6 @@ add(comboText); // Ou comboGroup.add(comboText)
 						});
 					}
 				});
-			case 'newtrash': // pq sim, ele e rebelde
-			  startSong();
 			default:
 				callTextbox();
 		}
@@ -1875,7 +1793,6 @@ add(comboText); // Ou comboGroup.add(comboText)
 			add(dialogueBox);
 		}
 		else
-		   
 			startCountdown();
 	}
 
