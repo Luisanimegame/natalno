@@ -208,8 +208,8 @@ class PlayState extends MusicBeatState
 			comboGroup.camera = camHUD;
 
 		// cache shit
-		//displayRating('sick', true, true);
-		//popUpCombo(true);
+		displayRating('sick', true, true);
+		popUpCombo(true);
 		//
 
 		stageBuild = new Stage(curStage);
