@@ -1263,7 +1263,7 @@ class PlayState extends MusicBeatState
 		{
 			for (sprite in comboGroup.members) {
 				if (sprite != null) sprite.destroy();
-				comboGroup.remove(sprite);
+				//comboGroup.remove(sprite);
 			}
 		}
 
